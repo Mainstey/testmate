@@ -1,0 +1,49 @@
+@import "~src/styles";
+.navbar {
+  background: #00B4DB;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  a {
+    color: #fff;
+  }
+  a:hover {
+    font-weight: bold;
+  }
+  .navbar-right {
+    float: right;
+  }
+  li .active {
+    a {
+      color: $active;
+    }
+  }
+  .navbar-toggler {
+    display: block;
+    &:focus {
+      outline:none;
+    }
+  }
+  .menu-items {
+    position: absolute;
+    top: 56px;
+    right: 0;
+    height: 300px;
+    width: 500px;
+    background: #00B4DB;
+    z-index:9999;
+    ul {
+      padding:0;
+    }
+  }
+  .nav-item {
+    display:block;
+  }
+  .nav-link {
+    display: block;
+    padding: 2rem 1rem;
+    font-size: 1.5rem;
+    &:hover {
+      background: #0083B0;
+    }
+  }
+}

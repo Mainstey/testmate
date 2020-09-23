@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "testmate-ui"
+    }
+  },
+  "defaultProject": "testmate-ui",
+  "cli": {
+    "analytics": "d20a1260-c6c5-42cd-9069-cc41dd2c6f1a"
+  }
 }
