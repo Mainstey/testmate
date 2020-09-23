@@ -1,0 +1,15 @@
+@import '~src/styles';
+.footer {
+  // position:fixed;
+  // bottom:0;
+  padding:20px 0px;
+  text-align:center;
+  border-top: 1px solid #ddd;
+  width:100%;
+  p {
+    color: #aaa;
+  }
+  @media only screen and (max-width: $screen-xs-max) {
+    position: static;
+  }
+}

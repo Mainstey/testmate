@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TestInterfaceComponent implements OnInit {
 
+  public isInstOpen: boolean;
   constructor() { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+    this.isInstOpen = JSON.parse(localStorage.getItem('isInstOpen'));
+    console.log(this.isInstOpen);
+  }
+
+  public readInstructions(): void {
+    this.isInstOpen = !this.isInstOpen;
+    localStorage.setItem('isInstOpen', String(this.isInstOpen));
   }
 
 }

@@ -1,1 +1,89 @@
-<p>test-interface works!</p>
+<main class="container">
+  <section class="test-interface">
+    <section class="instructions-section" *ngIf="isInstOpen">
+      <div class="instructions mx-auto">
+        <h3>Important Instructions</h3>
+        <ul>
+          <li>Your will 3 hours to complete the test</li>
+          <li>Please do not click on any link or header or footer</li>
+          <li>
+            You can see progress of your test of the left sidebar which shows
+            different colors for attempted, unattempted on question number
+          </li>
+          <li>The test will immediately start as you click the start button</li>
+          <li>
+            There will be popup asking your to submit the test as soon as the
+            test is over
+          </li>
+          <li>
+            Click on start button only and only if you have read and understood
+            the above instructions
+          </li>
+        </ul>
+        <div class="start-button">
+          <button
+            type="button"
+            class="btn btn-block btn-success"
+            (click)="readInstructions()"
+          >
+            Start
+          </button>
+        </div>
+      </div>
+    </section>
+    <section class="test-section row" *ngIf="!isInstOpen">
+      <section class="col-md-8">
+        <div class="questions-container">
+          <div class="questions-section">
+            <p>
+              <span class="que-text">Q1.</span>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+              Voluptate deleniti labore ipsum. Fugiat, minima deleniti nemo
+              libero dolore fugit. Cum nemo eveniet voluptas recusandae omnis
+              nesciunt id molestiae esse perferendis!
+            </p>
+          </div>
+          <div class="options-section">
+            <div class="form-group">
+              <input type="radio" name="options" />
+              <label class="opt-text">Option 1</label>
+            </div>
+            <div class="form-group">
+              <input type="radio" name="options" />
+              <label class="opt-text">Option 1</label>
+            </div>
+            <div class="form-group">
+              <input type="radio" name="options" />
+              <label class="opt-text">Option 1</label>
+            </div>
+            <div class="form-group">
+              <input type="radio" name="options" />
+              <label class="opt-text">Option 1</label>
+            </div>
+          </div>
+          <div class="navigation">
+            <i class="left fa fa-angle-left"></i>
+            <i class="right fa fa-angle-right"></i>
+          </div>
+        </div>
+      </section>
+      <section class="col-md-4">
+        <div class="status-container">
+          <div class="status-box"></div>
+          <div class="status-box"></div>
+          <div class="status-box"></div>
+          <div class="status-box"></div>
+          <div class="status-box"></div>
+          <div class="status-box"></div>
+          <div class="status-box"></div>
+          <div class="status-box"></div>
+          <div class="status-box"></div>
+          <div class="status-box"></div>
+          <div class="status-box"></div>
+          <div class="status-box"></div>
+        </div>
+      </section>
+      <p class="status-text">Ongoing Status</p>
+    </section>
+  </section>
+</main>
