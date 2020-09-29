@@ -117,7 +117,12 @@
   padding-bottom: 30px;
 }
 
-body{
+body {
   font-family: $font-family;
+}
 
+.btn-disable {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: 0.5;
 }
