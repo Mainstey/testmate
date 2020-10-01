@@ -44,18 +44,29 @@
               </div>
               <div class="options-section">
                 <div class="form-group">
+                  <!-- <input
+                    type="radio"
+                    name="options"
+                    [value]="options?.option_one"
+                    [ngModel]="question?.option_one"
+                    (ngModelChange)="selectOption(question?.option_one, question?.id)"
+                  /> -->
                   <input
                     type="radio"
                     name="options"
+                    [value]="question.option_one"
                     [(ngModel)]="options.option_one"
-                  />
+                    (ngModelChange)="selectOption(question?.option_one, question?.id)"
+                    >
                   <label class="opt-text">{{ question?.option_one }}</label>
                 </div>
                 <div class="form-group">
                   <input
                     type="radio"
                     name="options"
+                    [value]="question.option_two"
                     [(ngModel)]="options.option_two"
+                    (ngModelChange)="selectOption(question?.option_two, question?.id)"
                   />
                   <label class="opt-text">{{ question?.option_two }}</label>
                 </div>
@@ -63,7 +74,9 @@
                   <input
                     type="radio"
                     name="options"
+                    [value]="question.option_three"
                     [(ngModel)]="options.option_three"
+                    (ngModelChange)="selectOption(question?.option_three, question?.id)"
                   />
                   <label class="opt-text">{{ question?.option_three }}</label>
                 </div>
@@ -71,7 +84,9 @@
                   <input
                     type="radio"
                     name="options"
-                    [(ngModel)]="options.option_four"
+                    [value]="question.option_five"
+                    [(ngModel)]="options.option_five"
+                    (ngModelChange)="selectOption(question?.option_five, question?.id)"
                   />
                   <label class="opt-text">{{ question?.option_four }}</label>
                 </div>
@@ -79,7 +94,9 @@
                   <input
                     type="radio"
                     name="options"
+                    [value]="question.option_five"
                     [(ngModel)]="options.option_five"
+                    (ngModelChange)="selectOption(question?.option_five, question?.id)"
                   />
                   <label class="opt-text">{{ question?.option_five }}</label>
                 </div>
@@ -118,7 +135,6 @@
       <p class="status-text">Ongoing Status</p>
     </section>
   </section>
-  <button type="button" class="btn btn-primary" (click)="openModal()">
-    Create template modal
-  </button>
+
+  <div>{{this.timeRemaining}}</div>
 </main>
