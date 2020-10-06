@@ -31,7 +31,7 @@
         </div>
       </div>
     </section>
-    <section class="test-section row" *ngIf="!isInstOpen">
+    <section class="test-section row" *ngIf="!isInstOpen && questions">
       <section class="col-md-8">
         <div class="questions-container">
           <div *ngFor="let question of questions; let i = index">
@@ -44,61 +44,79 @@
               </div>
               <div class="options-section">
                 <div class="form-group">
-                  <!-- <input
-                    type="radio"
-                    name="options"
-                    [value]="options?.option_one"
-                    [ngModel]="question?.option_one"
-                    (ngModelChange)="selectOption(question?.option_one, question?.id)"
-                  /> -->
                   <input
+                    id="option_one"
                     type="radio"
                     name="options"
                     [value]="question.option_one"
                     [(ngModel)]="options.option_one"
-                    (ngModelChange)="selectOption(question?.option_one, question?.id)"
-                    >
-                  <label class="opt-text">{{ question?.option_one }}</label>
+                    (ngModelChange)="
+                      selectOption(question?.option_one, question?.id)
+                    "
+                  />
+                  <label for="option_one" class="opt-text">{{
+                    question?.option_one
+                  }}</label>
                 </div>
                 <div class="form-group">
                   <input
+                    id="option_two"
                     type="radio"
                     name="options"
                     [value]="question.option_two"
                     [(ngModel)]="options.option_two"
-                    (ngModelChange)="selectOption(question?.option_two, question?.id)"
+                    (ngModelChange)="
+                      selectOption(question?.option_two, question?.id)
+                    "
                   />
-                  <label class="opt-text">{{ question?.option_two }}</label>
+                  <label for="option_two" class="opt-text">{{
+                    question?.option_two
+                  }}</label>
                 </div>
                 <div class="form-group">
                   <input
+                    id="option_three"
                     type="radio"
                     name="options"
                     [value]="question.option_three"
                     [(ngModel)]="options.option_three"
-                    (ngModelChange)="selectOption(question?.option_three, question?.id)"
+                    (ngModelChange)="
+                      selectOption(question?.option_three, question?.id)
+                    "
                   />
-                  <label class="opt-text">{{ question?.option_three }}</label>
+                  <label for="option_three" class="opt-text">{{
+                    question?.option_three
+                  }}</label>
                 </div>
                 <div class="form-group">
                   <input
+                    id="option_four"
                     type="radio"
                     name="options"
-                    [value]="question.option_five"
-                    [(ngModel)]="options.option_five"
-                    (ngModelChange)="selectOption(question?.option_five, question?.id)"
+                    [value]="question.option_four"
+                    [(ngModel)]="options.option_four"
+                    (ngModelChange)="
+                      selectOption(question?.option_four, question?.id)
+                    "
                   />
-                  <label class="opt-text">{{ question?.option_four }}</label>
+                  <label for="option_four" class="opt-text">{{
+                    question?.option_four
+                  }}</label>
                 </div>
                 <div class="form-group" *ngIf="question?.option_five !== ''">
                   <input
+                    id="option_five"
                     type="radio"
                     name="options"
                     [value]="question.option_five"
                     [(ngModel)]="options.option_five"
-                    (ngModelChange)="selectOption(question?.option_five, question?.id)"
+                    (ngModelChange)="
+                      selectOption(question?.option_five, question?.id)
+                    "
                   />
-                  <label class="opt-text">{{ question?.option_five }}</label>
+                  <label for="option_five" class="opt-text">{{
+                    question?.option_five
+                  }}</label>
                 </div>
               </div>
             </div>
@@ -107,34 +125,28 @@
             <i
               class="left fa fa-angle-left"
               [ngClass]="{ 'btn-disable': checkAndDisableButtons() }"
-              (click)="showHideQuestions(questionNumber-1)"
+              (click)="showHideQuestions(questionNumber - 1)"
             ></i>
             <i
               class="right fa fa-angle-right"
-              (click)="showHideQuestions(questionNumber+1)"
+              (click)="showHideQuestions(questionNumber + 1)"
             ></i>
           </div>
         </div>
       </section>
       <section class="col-md-4">
+        <div>{{ this.timeRemaining }}</div>
         <div class="status-container">
-          <div class="status-box"></div>
-          <div class="status-box"></div>
-          <div class="status-box"></div>
-          <div class="status-box"></div>
-          <div class="status-box"></div>
-          <div class="status-box"></div>
-          <div class="status-box"></div>
-          <div class="status-box"></div>
-          <div class="status-box"></div>
-          <div class="status-box"></div>
-          <div class="status-box"></div>
-          <div class="status-box"></div>
+          <div
+            class="status-box"
+            [ngClass]="{'bg-success': isOptionSelected}"
+            *ngFor="let n of showStatus(questions.length); let i = index"
+          >
+            {{ i + 1 }}
+          </div>
         </div>
       </section>
       <p class="status-text">Ongoing Status</p>
     </section>
   </section>
-
-  <div>{{this.timeRemaining}}</div>
 </main>

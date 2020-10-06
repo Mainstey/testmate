@@ -12,7 +12,7 @@ export class TestRemoteService {
     return this.httpService.get();
   }
 
-  public getResults(requestBody: ISelectedOptions): Observable<any> {
-    return this.httpService.post(requestBody);
+  public getResults(requestBody: ISelectedOptions[]): Observable<any> {
+    return this.httpService.post(JSON.stringify(requestBody));
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { IOptions } from '../../data-interfaces/options.interface';
 import { IQuestions } from '../../data-interfaces/questions.interface';
@@ -7,13 +7,16 @@ import { TestRemoteService } from '../test-remote.service';
 import { Option } from '../../data-models/Option';
 import { ModalConfig } from '../../data-models/ModalConfig';
 import { DataSubjectService } from '../../core/data-subject.service';
+import { ISelectedOptions } from '../../data-interfaces/selected_options.interface';
+import { Router } from '@angular/router';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-test-interface',
   templateUrl: './test-interface.component.html',
   styleUrls: ['./test-interface.component.scss'],
 })
-export class TestInterfaceComponent implements OnInit {
+export class TestInterfaceComponent implements OnInit, OnDestroy {
   public modalRef: BsModalRef;
   public isInstOpen: boolean;
   public options: IOptions;
@@ -27,30 +30,56 @@ export class TestInterfaceComponent implements OnInit {
   public seconds: number = 60;
   public timeRemaining: string = '';
   public isModalTypeOver: boolean = false;
+  public isOptionSelected: boolean = false;
+  private isComponentChanged: boolean = true;
   private selectedOptions: any[] = [];
+
   constructor(
     private modalService: BsModalService,
     private testRemoteService: TestRemoteService,
-    private dataSubject: DataSubjectService
+    private dataSubject: DataSubjectService,
+    private router: Router
   ) {}
 
   public ngOnInit(): void {
-    this.isInstOpen = JSON.parse(localStorage.getItem('isInstOpen'));
+    this.isInstOpen = JSON.parse(localStorage.getItem('isInstOpen')) || true;
     this.options = new Option();
     this.getQuestions();
+    this.dataSubject
+      .on('submitTest')
+      .pipe(takeWhile(() => this.isComponentChanged))
+      .subscribe((response: any) => {
+        if (response) {
+          this.submitTest();
+        }
+      });
   }
 
   private getQuestions(): void {
-    this.testRemoteService.getQuestions().subscribe((response: any) => {
-      if (response) {
-        this.questions = response;
-        setInterval(() => this.showCLock(), 1000);
-      }
-    });
+    this.testRemoteService
+      .getQuestions()
+      .pipe(takeWhile(() => this.isComponentChanged))
+      .subscribe((response: any) => {
+        if (response) {
+          this.questions = response;
+          setInterval(() => this.showCLock(), 1000);
+        }
+      });
   }
 
-  public selectOption(option: string, quesiton_id: string): void {
-    console.log(option + quesiton_id);
+  public selectOption(option: string, question_id: string): void {
+    this.isOptionSelected = true;
+    const index = this.selectedOptions.findIndex(
+      (option: ISelectedOptions) => option.question_id === question_id
+    );
+    if (index === -1) {
+      this.selectedOptions.push({ option: option, question_id: question_id });
+    } else {
+      this.selectedOptions.splice(index, 1, {
+        option: option,
+        question_id: question_id,
+      });
+    }
   }
 
   public showHideQuestions(index: number): void {
@@ -61,20 +90,27 @@ export class TestInterfaceComponent implements OnInit {
     }
   }
 
+  public showStatus(n: number): Array<any> {
+    return Array(n);
+  }
+
   public showCLock(): void {
-    this.seconds --;
-    if(this.seconds === 0) {
-      this.minutes --;
+    this.seconds--;
+    if (this.seconds === 0) {
+      this.minutes--;
       this.seconds = 59;
       if (this.minutes === 0) {
-        this.hours --;
+        this.hours--;
         this.minutes = 59;
         if (this.hours === 0) {
           clearInterval();
+          this.isModalTypeOver = true;
+          this.openModal();
         }
       }
     }
-    this.timeRemaining = this.hours + ':' + this.minutes + ':' + '0' + this.seconds;
+    this.timeRemaining =
+      this.hours + ':' + this.minutes + ':' + '0' + this.seconds;
   }
 
   public checkAndDisableButtons(): boolean {
@@ -88,7 +124,26 @@ export class TestInterfaceComponent implements OnInit {
 
   public openModal(): void {
     this.modalConfig = new ModalConfig();
-    this.modalRef = this.modalService.show(TestOverModalComponent, this.modalConfig);
+    this.modalRef = this.modalService.show(
+      TestOverModalComponent,
+      this.modalConfig
+    );
     this.dataSubject.cast('isModalTypeOver', this.isModalTypeOver);
+  }
+
+  private submitTest(): void {
+    this.testRemoteService
+      .getResults(this.selectedOptions)
+      .pipe(takeWhile(() => this.isComponentChanged))
+      .subscribe((response: any) => {
+        if (response && response.result) {
+          localStorage.setItem('result', response.result);
+          this.router.navigate(['result']);
+        }
+      });
+  }
+
+  public ngOnDestroy(): void {
+    this.isComponentChanged = false;
   }
 }
