@@ -139,10 +139,11 @@
         <div class="status-container">
           <div
             class="status-box"
-            [ngClass]="{'bg-success': isOptionSelected}"
-            *ngFor="let n of showStatus(questions.length); let i = index"
+            *ngFor="let status of questionStatus; let i = index"
           >
-            {{ i + 1 }}
+            <div [ngClass]="{ 'bg-success': status.isSelected }">
+              {{ i + 1 }}
+            </div>
           </div>
         </div>
       </section>

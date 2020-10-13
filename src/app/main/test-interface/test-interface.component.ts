@@ -31,6 +31,8 @@ export class TestInterfaceComponent implements OnInit, OnDestroy {
   public timeRemaining: string = '';
   public isModalTypeOver: boolean = false;
   public isOptionSelected: boolean = false;
+  public questionStatus: any[] = [];
+  public isOptionChecked: boolean = false;
   private isComponentChanged: boolean = true;
   private selectedOptions: any[] = [];
 
@@ -62,22 +64,32 @@ export class TestInterfaceComponent implements OnInit, OnDestroy {
       .subscribe((response: any) => {
         if (response) {
           this.questions = response;
+          this.questions.forEach((item: IQuestions) => {
+            this.questionStatus.push({id: item.id, isSelected: false});
+          })
           setInterval(() => this.showCLock(), 1000);
         }
       });
   }
 
-  public selectOption(option: string, question_id: string): void {
-    this.isOptionSelected = true;
+  public selectOption($event: any, question_id: string): void {
+    // find index for selected option
     const index = this.selectedOptions.findIndex(
       (option: ISelectedOptions) => option.question_id === question_id
     );
+    // code for status change on option click
+    this.questionStatus.forEach((item: any) => {
+      if (item.id === question_id) {
+        item.isSelected = true;
+      }
+    });
+    // add and modify options selected and store it in array
     if (index === -1) {
-      this.selectedOptions.push({ option: option, question_id: question_id });
+      this.selectedOptions.push({ option: $event.target.value, question_id: question_id });
     } else {
       this.selectedOptions.splice(index, 1, {
-        option: option,
-        question_id: question_id,
+        option: $event.target.value,
+        question_id: question_id
       });
     }
   }
@@ -88,10 +100,6 @@ export class TestInterfaceComponent implements OnInit, OnDestroy {
     } else {
       this.questionNumber = index;
     }
-  }
-
-  public showStatus(n: number): Array<any> {
-    return Array(n);
   }
 
   public showCLock(): void {
